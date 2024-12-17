@@ -1,0 +1,63 @@
+.chat-box {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem;
+    border-bottom: 1px solid #FFDDAE;
+    transition: background-color 0.3s ease;
+  }
+  
+  .chat-box:hover {
+    background-color: #D4F6FF;
+  }
+  
+  .chat-details {
+    flex: 1;
+    margin-left: 0.75rem;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .right-info {
+    display: flex;
+    gap: 0.625rem;
+  }
+  
+  .user-name {
+    font-weight: bold;
+    font-size: 0.95rem;
+  }
+  
+  .message-date {
+    padding-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #777;
+  }
+  
+  .message-preview {
+    font-size: 0.875rem;
+    margin-top: 0.375rem;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #444;
+    font-size: 0.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .delete-button:hover {
+    color: #666;
+  }
+  
+  .delete-icon {
+    color: #C6E7FF;
+  }
+  

@@ -1,0 +1,16 @@
+.App {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #6a1b63;  */
+  overflow-x: hidden; /* Забирає горизонтальну прокрутку */
+  overflow-y: hidden; /* Забирає вертикальну прокрутку */
+}
+
+body {
+  margin: 0; /* Скидає стандартні відступи */
+  padding: 0;
+  overflow: hidden; /* Приховує прокрутку */
+}

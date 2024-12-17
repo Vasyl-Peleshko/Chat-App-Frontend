@@ -1,0 +1,39 @@
+.main-page-container{
+    height: 100vh;
+    width: 100vw;
+    background-color: #fbf2eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-1{
+    width: 40%;
+    height: 100vh;
+    border-right: 0.0625rem solid #d4bdcb;;
+    background-color: #FBFBFB;
+}
+
+.container-2{
+    flex: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #FFDDAE;
+}
+
+.chat-text {
+    color: #FFDDAE;
+    font-weight: 900;
+    font-size: larger;
+    padding: 1rem;
+  }
+
+  .no-chat-selected {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #777;
+  }
+  

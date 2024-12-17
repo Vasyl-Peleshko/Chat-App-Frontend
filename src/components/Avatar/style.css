@@ -1,0 +1,28 @@
+.avatar-container {
+    display: flex;
+    align-items: flex-end;
+  }
+  
+  .avatar-image {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .status-indicator {
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    margin-left: -0.5rem;
+    border: 0.0625rem solid #333;
+  }
+  
+  .online {
+    background-color: green;
+  }
+  
+  .offline {
+    background-color: rgb(139, 133, 133);
+  }
+  
