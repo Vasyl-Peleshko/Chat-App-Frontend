@@ -3,7 +3,7 @@ import './style.css';
 import LeftHeader from '../Headers/LeftHeader';
 import { getMessagesInChat, getUserChats } from '../../services/chatService';
 import { useAuthContext } from '../../context/User';
-import { Chat, Message, UserData } from '../../dto/index';
+import { Chat, Message } from '../../dto/index';
 import ChatComponent from '../Chat/Chat';
 import secondAvatar from '../../assets/secondAvatar.jpg'
 import ChatHeader from '../Headers/ChatHeader';
@@ -20,13 +20,20 @@ const MainComponent: FC = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState('');
 
-  const { socket } = useSocketContext();
+  const { socket, onlineUsers } = useSocketContext();
   const { user } = useAuthContext();
 
+  const otherUserId = selectedChat
+  ? chats.find((chat) => chat.chatId === selectedChat)?.user.otherUserId
+  : null;
+
+  const otherUserStatus = otherUserId
+    ? (onlineUsers[otherUserId] ? 'online' : 'offline')
+    : 'offline';
   
   useEffect(() => {
     fetchChats();
-  }, []);
+  }, [user, chats]);
 
   useEffect(() => {
     if (socket && user) {
@@ -37,7 +44,7 @@ const MainComponent: FC = () => {
               ? { ...chat, lastMessage: newMessage }
               : chat
           );
-
+          
           return updatedChats.sort(
             (a, b) =>
               new Date(b.lastMessage?.createdAt || 0).getTime() -
@@ -47,7 +54,6 @@ const MainComponent: FC = () => {
 
         const updatedChats = updateChats(chats);
         setChats(updatedChats);
-        //filterChats(updatedChats, searchQuery);
 
         if (newMessage.chatId === selectedChat) {
           setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -61,7 +67,6 @@ const MainComponent: FC = () => {
       };
     }
   }, [selectedChat, chats, messages, socket, user.id, setChats, setMessages]);
-
 
 
   const fetchChats = async () => {
@@ -100,7 +105,6 @@ const MainComponent: FC = () => {
     }
   };
 
-  const generateUniqueId = () => Math.random().toString(36).substring(2, 9);
 
   const handleSendMessage = () => {
     if (newMessage.trim() && selectedChat) {
@@ -113,19 +117,6 @@ const MainComponent: FC = () => {
       socket.emit('sendMessage', message);
       setNewMessage('');
 
-      if (selectedChat === message.chatId) {
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            id: generateUniqueId(), // Генеруємо унікальний ID
-            senderId: message.senderId,
-            chatId: message.chatId,
-            text: message.text,
-            timestamp: new Date(message.createdAt).toISOString(), // Конвертуємо дату
-          },
-        ]);
-      }
-
       const updatedChats = chats.map((chat) =>
         chat.chatId === selectedChat
           ? { ...chat, lastMessage: message }
@@ -136,6 +127,11 @@ const MainComponent: FC = () => {
     }
   };
 
+  const handleChatCreated = (newChat) => {
+    setChats((prevChats) => [...prevChats, newChat]);
+  };
+
+
   if (error || user == null) {
     return <div>Error: {error}</div>;
   }
@@ -145,20 +141,19 @@ const MainComponent: FC = () => {
   return (
     <div className="main-page-container">
       <div className="container-1">
-        <LeftHeader onSearchChange={(value) => setSearchTerm(value)} />
+        <LeftHeader onSearchChange={(value) => setSearchTerm(value)} onChatCreated={handleChatCreated}
+          chats={chats} />
       <div className="chats-container">
           <a className="chat-text">Chats</a>
           {filteredChats.map((chat) => (
             <ChatComponent
               key={chat.chatId}
               chatID={chat.chatId}
-              //otherUserId={chat.user.otherUserId}
               avatarSrc={secondAvatar}
               name={`${chat.user.firstName} ${chat.user.lastName}`}
               message={chat.lastMessage ? chat.lastMessage.text : 'No messages yet'}
               date={chat.lastMessage ? new Date(chat.lastMessage.createdAt).toLocaleDateString() : ''}
-              //status={onlineUsers[chat.user.otherUserId] ? 'online' : 'offline'}
-              status='online'
+              status={onlineUsers[chat.user.otherUserId] ? 'online' : 'offline'}
               onClick={() => handleGetMessagesInChat(chat.chatId)}
               onDelete={() => handleDeleteChat(chat.chatId)}
             />
@@ -173,14 +168,13 @@ const MainComponent: FC = () => {
         ) : (
           <>
         <ChatHeader 
-          //name={`${otherUser?.firstName} ${ otherUser?.lastName}`}
           name = {`${chats.find((chat) => chat.chatId === selectedChat)?.user.firstName}`}
-          status='online'/>
+          status={otherUserStatus}/>
         <MessageContainer messages={messages}/>
         <MessageInput
-         newMessage={newMessage}
-         setNewMessage={setNewMessage}
-         handleSendMessage={handleSendMessage}
+          newMessage={newMessage}
+          setNewMessage={setNewMessage}
+          handleSendMessage={handleSendMessage}
          />
          </>
         )}

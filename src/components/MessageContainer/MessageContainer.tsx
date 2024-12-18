@@ -1,13 +1,9 @@
 import React, { FC, useRef, useEffect } from 'react';
-import { Message } from '../../dto/index'; // Assuming this is the type of messages
 import './style.css';
 import { OutgoingMessage } from './Messages/OutgoingMessage';
 import { IncomingMessage } from './Messages/IncomingMessage';
 import { useAuthContext } from '../../context/User';
-
-interface MessageContainerProps {
-  messages: Message[];
-}
+import { MessageContainerProps } from '../../dto/componentsProps/index';
 
 const MessageContainer: FC<MessageContainerProps> = ({ messages }) => {
   const conversationEndRef = useRef<HTMLDivElement | null>(null);
@@ -15,6 +11,8 @@ const MessageContainer: FC<MessageContainerProps> = ({ messages }) => {
 
   useEffect(() => {
     conversationEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    console.log(messages);
+    
   }, [messages]);
 
   if(user == null){
@@ -29,7 +27,6 @@ const MessageContainer: FC<MessageContainerProps> = ({ messages }) => {
             key={index}
             text={msg.text}
             createdAt={new Date(msg.createdAt).toLocaleString()}
-            //createdAt={new Date().toLocaleString()}
           />
         ) : (
           <IncomingMessage

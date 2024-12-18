@@ -4,19 +4,9 @@ import './style.css';
 import { FaTrash } from 'react-icons/fa';
 import { deleteChat } from '../../services/chatService';
 import ConfirmationModal from '../ModalWindows/deleteModal/ConfirmationModal';
+import { ChatProps } from '../../dto/componentsProps/index';
 
-interface ChatItemProps {
-  chatID: string;
-  avatarSrc: string;
-  name: string;
-  message: string;
-  date: string;
-  status: 'online' | 'offline';
-  onClick: () => void;
-  onDelete: (chatId: string) => void; 
-
-}
-const ChatComponent: React.FC<ChatItemProps> = ({ chatID, avatarSrc, name, message, date, status, onClick, onDelete }) => {
+const ChatComponent: React.FC<ChatProps> = ({ chatID, avatarSrc, name, message, date, status, onClick, onDelete }) => {
     const [isModalVisible, setModalVisible] = useState(false); 
     const [messageToDelete, setMessageToDelete] = useState<string>(''); 
   

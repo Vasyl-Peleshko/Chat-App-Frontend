@@ -1,0 +1,65 @@
+/* Модальне вікно */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .modal {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .input-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+
+    margin-bottom: 1rem;
+  }
+  
+  /* Стилі для інпутів */
+  input {
+    width: 45%;
+    padding: 0.5rem;
+    border: 1px solid #cccccc;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+  }
+  
+  /* Кнопки */
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 1rem;
+  }
+  
+  button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  /* Колір для кнопок */
+  button:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  

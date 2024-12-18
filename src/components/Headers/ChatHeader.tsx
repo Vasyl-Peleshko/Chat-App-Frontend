@@ -2,11 +2,8 @@ import React, { FC } from 'react';
 import './style.css';
 import avatarPic from '../../assets/secondAvatar.jpg';
 import Avatar from '../Avatar/Avatar';
+import { ChatHeaderProps } from '../../dto/componentsProps';
 
-interface ChatHeaderProps {
-  name: string;
-  status: 'online' | 'offline';
-}
 
 const ChatHeader: FC<ChatHeaderProps> = ({ name, status }) => {
   return (

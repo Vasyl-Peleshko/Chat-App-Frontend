@@ -1,10 +1,6 @@
 import React, { FC } from 'react';
 import './style.css';
-
-interface AvatarProps {
-  avatarSrc: string;
-  status: 'online' | 'offline';
-}
+import { AvatarProps } from '../../dto/componentsProps/index';
 
 const Avatar: FC<AvatarProps> = ({ avatarSrc, status }) => {
   return (

@@ -1,12 +1,6 @@
 import { useState, FC } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Імпортуємо іконки
-
-interface InputFieldProps {
-  type: string; // Тип поля вводу (наприклад, 'text', 'email', 'password')
-  placeholder?: string; // Плейсхолдер для інпуту (необов'язковий)
-  value: string; // Значення поля вводу
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; // Обробник зміни значення
-}
+import { InputFieldProps } from "../../dto/componentsProps/index";
 
 const InputField: FC<InputFieldProps> = ({ type, placeholder, value, onChange }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -24,7 +18,7 @@ const InputField: FC<InputFieldProps> = ({ type, placeholder, value, onChange })
         value={value}
         onChange={onChange}
         required
-        style={{ paddingRight: "2rem" }} // Відступ справа для іконки
+        style={{ paddingRight: "2rem" }} 
       />
       {type === "password" && (
         <span

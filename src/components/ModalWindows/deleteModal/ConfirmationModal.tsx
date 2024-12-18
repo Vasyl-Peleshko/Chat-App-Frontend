@@ -1,15 +1,10 @@
 import React from 'react';
-import './style.css'; // Create a separate CSS file for the modal styles
+import './style.css';
+import { ConfirmationModalProps } from '../../../dto/componentsProps/index';
 
-interface ConfirmationModalProps {
-  isVisible: boolean;
-  message: string;
-  onConfirm: () => void;
-  onCancel: () => void;
-}
 
 const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isVisible, message, onConfirm, onCancel }) => {
-  if (!isVisible) return null; // Don't render the modal if it's not visible
+  if (!isVisible) return null; 
 
   return (
     <div className="modal-overlay">

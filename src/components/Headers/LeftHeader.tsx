@@ -1,17 +1,22 @@
-import React, { FC } from "react";
+import React, { FC, useState } from "react";
 import { useAuthContext } from "../../context/User";
 import avatar from '../../assets/avatat.jpg';
 import { useNavigate } from "react-router-dom";
 import Avatar from "../Avatar/Avatar";
 import { FaSearch } from "react-icons/fa";
 import './style.css'
+import CreateChatModal from "../ModalWindows/createChatModal/CreateChatModal";
+import { useAuthService } from "../../services/authService";
+import { Chat, UserData } from "../../dto";
+import { createChat } from "../../services/chatService";
+import { toast } from "react-toastify";
+import { HandleCreateChatProps, LeftHeaderProps } from "../../dto/componentsProps/index";
 
-interface LeftHeaderProps {
-    onSearchChange: (value: string) => void; // Тип функції, яка приймає рядок
-}
+const LeftHeader: FC<LeftHeaderProps> = ({onSearchChange, onChatCreated, chats} ) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-const LeftHeader: FC<LeftHeaderProps> = ({onSearchChange} ) => {
   const { user } = useAuthContext();
+  const { getUserByName } = useAuthService();
   const navigate = useNavigate();
   
   const handleLogout = () => {
@@ -19,8 +24,61 @@ const LeftHeader: FC<LeftHeaderProps> = ({onSearchChange} ) => {
     navigate('/login');
   };
   
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
+
+  const handleCreateChat = async ({ firstName, lastName }: HandleCreateChatProps) => {
+    try {
+      if (!firstName.trim() || !lastName.trim()) {
+        throw new Error("First name and last name cannot be empty.");
+      }
+
+      if (firstName === user.firstName && lastName === user.lastName) {
+        throw new Error("You cannot create a chat with yourself.");
+      }
+
+      const newUser: UserData | null = await getUserByName(firstName, lastName);
+
+      if (!newUser) {
+        throw new Error('User not found');
+      }
+
+      const existingChat = chats.find((chat: Chat) => chat.user.otherUserId === newUser._id);
+      if (existingChat) {
+        throw new Error("A chat with this user already exists.");
+      }
+
+      const participants = [newUser._id, user.id];
+      const chat = await createChat(participants);
+
+      const chatDetails = {
+        chatId: chat._id,
+        user: {
+          otherUserId: newUser._id,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName
+        },
+        lastMessage: null
+      };
+
+      onChatCreated(chatDetails);
+      setIsModalOpen(false);
+    } catch (error) {
+      console.error(error);
+      toast.error('There is no registred user with such name and surname in our chat');
+    }
+  };
+
+
   if (!user) {
-    return <div>Loading...</div>; // Or handle the case when the user is not logged in
+    return <div>Loading...</div>;
   }
 
   return (
@@ -31,8 +89,7 @@ const LeftHeader: FC<LeftHeaderProps> = ({onSearchChange} ) => {
           <span className="about-user">{`${user.firstName} ${user.lastName}`}</span>
         </div>
         <div className="button-section">
-            <button className="create-chat-btn">
-            {/* <FaPlus className="plus-icon" /> */}
+            <button className="create-chat-btn" onClick={openModal}>
             +
             </button>
             <button className="logout-btn" onClick={handleLogout}>Log Out</button>
@@ -49,6 +106,8 @@ const LeftHeader: FC<LeftHeaderProps> = ({onSearchChange} ) => {
           />
         </div>
       </div>
+      <CreateChatModal isOpen={isModalOpen} onCreate={handleCreateChat} onCancel={closeModal} />
+
     </header>
   );
 };

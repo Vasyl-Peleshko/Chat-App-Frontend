@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import InputField from "./InputField";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthService } from "../../services/authService";
 
 const SignUp: FC = () => {

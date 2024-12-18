@@ -1,12 +1,8 @@
 import React, { FC } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import './style.css';
+import { MessageInputProps } from '../../../dto/componentsProps/index';
 
-interface MessageInputProps {
-  newMessage: string;
-  setNewMessage: (value: string) => void;
-  handleSendMessage: () => void;
-}
 
 const MessageInput: FC<MessageInputProps> = ({ newMessage, setNewMessage, handleSendMessage }) => {
   return (
