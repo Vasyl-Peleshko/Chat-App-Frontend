@@ -28,7 +28,7 @@ export const SocketContextProvider = ({ children }: SocketContextProviderProps) 
 
   useEffect(() => {
     if (user) {
-      const newSocket: Socket = io("https://chat-app-backend-ijjx.onrender.com/", {
+      const newSocket: Socket = io("https://chat-app-backend-vxgi.onrender.com/", {
         query: {
           userId: user.id,
         },

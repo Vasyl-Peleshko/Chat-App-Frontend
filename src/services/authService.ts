@@ -3,7 +3,7 @@ import { UserData, UserResponse } from "../dto/index";
 import { useAuthContext } from "../context/User";
 import { toast } from "react-toastify";
 
-const API_URL = "https://chat-app-backend-ijjx.onrender.com/auth";
+const API_URL = "https://chat-app-backend-vxgi.onrender.com/auth";
 
 
 export const useAuthService = () => {
