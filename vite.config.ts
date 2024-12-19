@@ -5,6 +5,9 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   base: './', // Коректний шлях до ресурсів при деплої
+  server: {
+    port: 5173
+  },
   build: {
     outDir: 'dist', // Папка для збірки
     sourcemap: true, // Карти коду для відлагодження
