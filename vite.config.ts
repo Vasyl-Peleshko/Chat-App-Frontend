@@ -6,7 +6,8 @@ export default defineConfig({
   plugins: [react()],
   base: './', // Коректний шлях до ресурсів при деплої
   server: {
-    port: 5173
+    port: 5173,
+     host: '0.0.0.0',
   },
   build: {
     outDir: 'dist', // Папка для збірки
