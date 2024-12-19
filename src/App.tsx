@@ -8,7 +8,6 @@ import { ToastContainer } from 'react-toastify';
 
 function App() {
   const { user } = useAuthContext();
-  console.log(user);
   
   return (
     <>

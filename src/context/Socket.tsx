@@ -28,7 +28,7 @@ export const SocketContextProvider = ({ children }: SocketContextProviderProps) 
 
   useEffect(() => {
     if (user) {
-      const newSocket: Socket = io("http://localhost:3000/", {
+      const newSocket: Socket = io("https://chat-app-backend-1-npwv.onrender.com/", {
         query: {
           userId: user.id,
         },
@@ -37,7 +37,6 @@ export const SocketContextProvider = ({ children }: SocketContextProviderProps) 
       setSocket(newSocket);
 
       newSocket.on("updateUserList", (users: string[]) => {
-        console.log("Online users:", users);
         setOnlineUsers(users);
       });
 

@@ -32,50 +32,52 @@ const LeftHeader: FC<LeftHeaderProps> = ({onSearchChange, onChatCreated, chats} 
     setIsModalOpen(false);
   };
 
-
-
   const handleCreateChat = async ({ firstName, lastName }: HandleCreateChatProps) => {
     try {
       if (!firstName.trim() || !lastName.trim()) {
         throw new Error("First name and last name cannot be empty.");
       }
-
+  
+      if (!user) {
+        throw new Error("User is not logged in.");
+      }
+  
       if (firstName === user.firstName && lastName === user.lastName) {
         throw new Error("You cannot create a chat with yourself.");
       }
-
+  
       const newUser: UserData | null = await getUserByName(firstName, lastName);
-
+  
       if (!newUser) {
         throw new Error('User not found');
       }
-
+  
       const existingChat = chats.find((chat: Chat) => chat.user.otherUserId === newUser._id);
       if (existingChat) {
         throw new Error("A chat with this user already exists.");
       }
-
-      const participants = [newUser._id, user.id];
+  
+      const participants: string[] = [newUser._id, user.id].filter((id): id is string => id !== undefined);
       const chat = await createChat(participants);
-
-      const chatDetails = {
-        chatId: chat._id,
+  
+      const chatDetails: Chat= {
+        chatId: chat._id ?? "",
         user: {
-          otherUserId: newUser._id,
-          firstName: newUser.firstName,
-          lastName: newUser.lastName
+          otherUserId: newUser._id ?? "",
+          firstName: newUser.firstName ?? "",
+          lastName: newUser.lastName ?? ""
         },
-        lastMessage: null
+        lastMessage: { text: "", createdAt: "" },
       };
-
+  
       onChatCreated(chatDetails);
       setIsModalOpen(false);
     } catch (error) {
       console.error(error);
-      toast.error('There is no registred user with such name and surname in our chat');
+      toast.error('There is no registered user with such name and surname in our chat');
     }
   };
-
+  
 
   if (!user) {
     return <div>Loading...</div>;

@@ -1,4 +1,5 @@
 export interface Chat {
+    _id?: string;
     chatId: string;
     lastMessage: {
       createdAt?: string;
@@ -7,7 +8,7 @@ export interface Chat {
     user: {
       firstName: string;
       lastName: string;
-      otherUserId: string;
+      otherUserId?: string;
     };
   }
   

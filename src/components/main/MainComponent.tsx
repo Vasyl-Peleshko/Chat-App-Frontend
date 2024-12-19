@@ -23,14 +23,16 @@ const MainComponent: FC = () => {
   const { socket, onlineUsers } = useSocketContext();
   const { user } = useAuthContext();
 
-  const otherUserId = selectedChat
-  ? chats.find((chat) => chat.chatId === selectedChat)?.user.otherUserId
+
+
+  const otherUserId: string | null = selectedChat
+  ? chats.find((chat: Chat) => chat.chatId === selectedChat)?.user.otherUserId || null
   : null;
 
   const otherUserStatus = otherUserId
-    ? (onlineUsers[otherUserId] ? 'online' : 'offline')
-    : 'offline';
-  
+  ? (otherUserId in onlineUsers ? 'online' : 'offline')
+  : 'offline';
+
   useEffect(() => {
     fetchChats();
   }, [user, chats]);
@@ -66,14 +68,16 @@ const MainComponent: FC = () => {
         socket.off("receiveMessage");
       };
     }
-  }, [selectedChat, chats, messages, socket, user.id, setChats, setMessages]);
+  }, [selectedChat, chats, messages, socket, user, setChats, setMessages]);
 
 
   const fetchChats = async () => {
     try {
+      if (!user?.id) {
+        throw new Error('User ID is undefined');
+      }
       const chats = await getUserChats(user?.id);
       setChats(chats);
-      console.log(chats);
       
     } catch (error) {
       console.log(error);
@@ -107,6 +111,16 @@ const MainComponent: FC = () => {
 
 
   const handleSendMessage = () => {
+    if (!user) {
+      console.error('User is not defined');
+      return;
+    }
+  
+    if (!socket) {
+      console.error('Socket is not connected');
+      return;
+    }
+  
     if (newMessage.trim() && selectedChat) {
       const message = {
         senderId: user.id,
@@ -127,7 +141,7 @@ const MainComponent: FC = () => {
     }
   };
 
-  const handleChatCreated = (newChat) => {
+  const handleChatCreated = (newChat: Chat) => {
     setChats((prevChats) => [...prevChats, newChat]);
   };
 
@@ -152,8 +166,12 @@ const MainComponent: FC = () => {
               avatarSrc={secondAvatar}
               name={`${chat.user.firstName} ${chat.user.lastName}`}
               message={chat.lastMessage ? chat.lastMessage.text : 'No messages yet'}
-              date={chat.lastMessage ? new Date(chat.lastMessage.createdAt).toLocaleDateString() : ''}
-              status={onlineUsers[chat.user.otherUserId] ? 'online' : 'offline'}
+              date={chat.lastMessage?.createdAt ? new Date(chat.lastMessage.createdAt).toLocaleDateString() : ''}
+              status={
+                chat.user.otherUserId && chat.user.otherUserId in onlineUsers
+                  ? 'online'
+                  : 'offline'
+              }     
               onClick={() => handleGetMessagesInChat(chat.chatId)}
               onDelete={() => handleDeleteChat(chat.chatId)}
             />

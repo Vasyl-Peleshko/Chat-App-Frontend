@@ -11,7 +11,6 @@ const MessageContainer: FC<MessageContainerProps> = ({ messages }) => {
 
   useEffect(() => {
     conversationEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-    console.log(messages);
     
   }, [messages]);
 
@@ -26,14 +25,14 @@ const MessageContainer: FC<MessageContainerProps> = ({ messages }) => {
           <OutgoingMessage
             key={index}
             text={msg.text}
-            createdAt={new Date(msg.createdAt).toLocaleString()}
-          />
+            createdAt={msg.createdAt ? new Date(msg.createdAt).toLocaleString() : 'Unknown time'}
+            />
         ) : (
           <IncomingMessage
             key={index}
             text={msg.text}
-            createdAt={new Date(msg.createdAt).toLocaleString()}
-          />
+            createdAt={msg.createdAt ? new Date(msg.createdAt).toLocaleString() : 'Unknown time'}
+            />
         )
       ))}
       <div ref={conversationEndRef} />

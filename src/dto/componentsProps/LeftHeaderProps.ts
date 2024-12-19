@@ -7,7 +7,7 @@ export interface HandleCreateChatProps {
 
 export interface LeftHeaderProps {
       onSearchChange: (value: string) => void; 
-      onChatCreated: (value: string) => void; 
-      chats: Chat;
+      onChatCreated: (value: Chat) => void; 
+      chats: Chat[];
   }
   
