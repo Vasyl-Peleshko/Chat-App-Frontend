@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Chat, Message } from '../dto/index';
 
-const API_URL = 'https://chat-app-backend-1-npwv.onrender.com/chat';
+const API_URL = 'https://chat-app-backend-ijjx.onrender.com/chat';
 
 export const getUserChats = async (userId: string): Promise<Chat[]> => {
   try {
